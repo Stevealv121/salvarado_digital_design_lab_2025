@@ -1,0 +1,6 @@
+# Quartus directories
+/db*/
+/incremental_db*/
+/output_files*/
+*.qdb/
+*.sdb/
