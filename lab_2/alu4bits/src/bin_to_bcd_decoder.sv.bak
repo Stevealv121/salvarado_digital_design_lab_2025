@@ -2,8 +2,11 @@ module bin_to_bcd_decoder(
     input [3:0] bin_number,
     output reg [6:0] bcd_number
 );
+
 always @(*) begin
     case(bin_number)
+        // Common anode segments (0=ON, 1=OFF)
+        // Segment order: g f e d c b a
         0:  bcd_number = 7'b1000000; // 0
         1:  bcd_number = 7'b1111001; // 1
         2:  bcd_number = 7'b0100100; // 2
@@ -17,4 +20,5 @@ always @(*) begin
         default: bcd_number = 7'b1111111; // Off
     endcase
 end
+
 endmodule
