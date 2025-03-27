@@ -1,0 +1,45 @@
+module control_unit(
+    input logic clk,
+    input logic key0_pressed,
+    input logic key1_pressed,
+    input logic key2_pressed,
+    input logic [3:0] sw_high,
+    input logic [3:0] sw_low,
+    output logic [3:0] operand_a,
+    output logic [3:0] operand_b,
+    output logic [3:0] operation,
+    output logic [3:0] result,
+    output logic result_valid,
+    output logic mode,
+    output logic is_negative
+);
+    // Registers with reset
+    always_ff @(posedge clk) begin
+        if (key2_pressed) begin  // AC reset
+            operand_a <= 4'b0;
+            operand_b <= 4'b0;
+            operation <= 4'b0;
+            result <= 4'b0;
+            result_valid <= 1'b0;
+            mode <= 1'b0;
+            is_negative <= 1'b0;
+        end
+        else begin
+            // Mode toggle
+            if (key0_pressed) begin
+                mode <= ~mode;
+                result_valid <= 1'b0;
+            end
+            
+            // Number input
+            if (~mode) begin
+                operand_a <= sw_high;  // SW[7:4]
+                operand_b <= sw_low;   // SW[3:0]
+            end 
+            // Operation selection
+            else begin
+                operation <= sw_low;   // SW[3:0]
+            end
+        end
+    end
+endmodule

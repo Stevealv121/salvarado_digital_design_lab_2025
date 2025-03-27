@@ -8,8 +8,10 @@ module alu(
     always_comb begin
         is_negative = 1'b0;
         case(opcode)
-            4'b0000: result = a + b;          // Addition
-            4'b0001: begin                    // Subtraction
+            4'b0000: begin  // Addition
+                result = a + b;
+            end
+            4'b0001: begin  // Subtraction
                 if (a >= b) begin
                     result = a - b;
                 end else begin
