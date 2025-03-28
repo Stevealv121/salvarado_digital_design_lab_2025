@@ -1,47 +1,107 @@
-module alu(
-    input logic [3:0] a,
-    input logic [3:0] b,
-    input logic [1:0] opcode,
-    output logic [3:0] result,
-    output logic is_negative,
-    output logic overflow,
-    output logic div_by_zero
+module alu #(parameter N = 4) (
+    input logic [N-1:0] a,
+    input logic [N-1:0] b,
+    input logic [3:0] opcode,
+    output logic [N-1:0] result,
+    output logic N_flag,  // Negative
+    output logic Z_flag,  // Zero
+    output logic C_flag,  // Carry
+    output logic V_flag,  // Overflow
+	 output logic div_by_zero_error,
+    output logic mod_by_zero_error
 );
-    logic [7:0] temp;
+    // Internal signals
+    logic [N-1:0] sum, diff;
+    logic [2*N-1:0] product;
+    logic carry_out, borrow_out;
+    logic overflow_add, overflow_sub;
+    
+    full_adder_nbit #(N) adder(
+        .a(a),
+        .b(b),
+        .cin(1'b0),
+        .sum(sum),
+        .cout(carry_out),
+        .overflow(overflow_add)
+    );
+    
+    full_subtractor_nbit #(N) sub(
+        .a(a),
+        .b(b),
+        .bin(1'b0),
+        .diff(diff),
+        .bout(borrow_out),
+        .overflow(overflow_sub)
+    );
+    
+		shift_add_multiplier #(N) mult(
+			 .a(a),
+			 .b(b),
+			 .product(product)
+		);
     
     always_comb begin
-        // Default outputs
-        result = 4'b0;
-        is_negative = 1'b0;
-        overflow = 1'b0;
-        div_by_zero = 1'b0;
-        temp = 8'b0;
+        // Default values
+        result = {N{1'b0}};
+        N_flag = 1'b0;
+        Z_flag = 1'b0;
+        C_flag = 1'b0;
+        V_flag = 1'b0;
+		  div_by_zero_error = 1'b0;  // Default: no error
+        mod_by_zero_error = 1'b0;  // Default: no error
         
         case(opcode)
-            2'b00: {overflow, result} = a + b;  // Addition
-            
-            2'b01: begin  // Subtraction
-                if (a >= b) begin
-                    result = a - b;
-                end else begin
-                    result = b - a;
-                    is_negative = 1'b1;
-                end
+            // Addition
+            4'b0000: begin
+                result = sum;
+                C_flag = carry_out;
+                V_flag = overflow_add;
             end
             
-            2'b10: begin  // Multiplication
-                temp = a * b;
-                result = temp[3:0];
-                overflow = |temp[7:4];
+            // Subtraction
+            4'b0001: begin
+                result = diff;
+                N_flag = result[N-1];
+                C_flag = borrow_out;
+                V_flag = overflow_sub;
             end
             
-            2'b11: begin  // Division
-                if (b == 0) begin
-                    div_by_zero = 1'b1;
-                end else begin
-                    result = a / b;
-                end
+            // Multiplication
+            4'b0010: begin
+                result = product[N-1:0];
+                V_flag = |product[2*N-1:N];
             end
+            
+            // Other operations can use HDL operators
+		      4'b0011: begin  // Division
+					 if (b == 0) begin
+						  result = {N{1'b0}};  // Return 0 for safety
+						  div_by_zero_error = 1'b1;  // Explicit error flag
+					 end else begin
+						  result = a / b;
+						  div_by_zero_error = 1'b0;
+					 end
+				end
+
+				4'b0100: begin  // Modulo
+					 if (b == 0) begin
+						  result = {N{1'b0}};  // Return 0 for safety
+						  mod_by_zero_error = 1'b1;  // Explicit error flag
+					 end else begin
+						  result = a % b;
+						  mod_by_zero_error = 1'b0;
+					 end
+				end
+            4'b0101: result = a & b;  // AND
+            4'b0110: result = a | b;  // OR
+            4'b0111: result = a ^ b;  // XOR
+            4'b1000: result = a << b[$clog2(N)-1:0];  // Shift left
+            4'b1001: result = a >> b[$clog2(N)-1:0];  // Shift right
+            
+            default: result = {N{1'b0}};
         endcase
+        
+        // Zero flag (common to all operations)
+        Z_flag = (result == {N{1'b0}});
     end
 endmodule
