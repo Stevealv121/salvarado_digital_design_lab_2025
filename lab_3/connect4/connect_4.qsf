@@ -39,7 +39,7 @@
 
 set_global_assignment -name FAMILY "Cyclone V"
 set_global_assignment -name DEVICE 5CSXFC6D6F31C6
-set_global_assignment -name TOP_LEVEL_ENTITY connect_4
+set_global_assignment -name TOP_LEVEL_ENTITY vga_controller
 set_global_assignment -name ORIGINAL_QUARTUS_VERSION 24.1STD.0
 set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:18:52  APRIL 09, 2025"
 set_global_assignment -name LAST_QUARTUS_VERSION "24.1std.0 Lite Edition"
@@ -54,3 +54,45 @@ set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
 set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_location_assignment PIN_AF14 -to clk
+set_location_assignment PIN_AJ21 -to vga_blue[0]
+set_location_assignment PIN_AJ20 -to vga_blue[1]
+set_location_assignment PIN_AH20 -to vga_blue[2]
+set_location_assignment PIN_AJ19 -to vga_blue[3]
+set_location_assignment PIN_AH19 -to vga_blue[4]
+set_location_assignment PIN_AJ17 -to vga_blue[5]
+set_location_assignment PIN_AJ16 -to vga_blue[6]
+set_location_assignment PIN_AK16 -to vga_blue[7]
+set_location_assignment PIN_AK26 -to vga_green[0]
+set_location_assignment PIN_AJ25 -to vga_green[1]
+set_location_assignment PIN_AH25 -to vga_green[2]
+set_location_assignment PIN_AK24 -to vga_green[3]
+set_location_assignment PIN_AJ24 -to vga_green[4]
+set_location_assignment PIN_AH24 -to vga_green[5]
+set_location_assignment PIN_AK23 -to vga_green[6]
+set_location_assignment PIN_AH23 -to vga_green[7]
+set_location_assignment PIN_AK29 -to vga_red[0]
+set_location_assignment PIN_AK28 -to vga_red[1]
+set_location_assignment PIN_AK27 -to vga_red[2]
+set_location_assignment PIN_AJ27 -to vga_red[3]
+set_location_assignment PIN_AH27 -to vga_red[4]
+set_location_assignment PIN_AF26 -to vga_red[5]
+set_location_assignment PIN_AG26 -to vga_red[6]
+set_location_assignment PIN_AJ26 -to vga_red[7]
+set_location_assignment PIN_AJ4 -to reset
+set_global_assignment -name BOARD "Cyclone V SoC Development Kit"
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_AA24 -to pll_status_led
+set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_synchronizer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_controller.sv
+set_global_assignment -name QIP_FILE src/vga/pll.qip
+set_global_assignment -name SIP_FILE src/vga/pll.sip
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_location_assignment PIN_AK21 -to CLK_VGA
+set_location_assignment PIN_AK22 -to SYNC_BLANK
+set_location_assignment PIN_AK18 -to SYNC_V
+set_location_assignment PIN_AK19 -to SYNC_H
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
