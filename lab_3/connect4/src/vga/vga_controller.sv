@@ -1,5 +1,9 @@
 module vga_controller( 
     input logic clk,         // 50MHz clock
+	 input logic [1:0] game_state,
+    input logic [5:0][6:0] board,
+	 input logic [3:0] turn_timer,
+	 input logic [1:0] current_player,
     output logic SYNC_H,  // VGA HSYNC
     output logic SYNC_V,  // VGA VSYNC
 	 output logic SYNC_B,
