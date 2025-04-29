@@ -14,7 +14,7 @@ module connect4_top (
   // Señales internas
   logic [2:0] player1_move, player2_move;
   logic [1:0] game_state;
-  logic [5:0][6:0] board;
+  logic [1:0] board[5:0][6:0];
   logic [3:0] turn_timer;
   logic [1:0] current_player;
   
