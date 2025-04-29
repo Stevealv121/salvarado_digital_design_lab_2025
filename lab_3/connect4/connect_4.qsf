@@ -91,6 +91,14 @@ set_location_assignment PIN_AK19 -to SYNC_H
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name EDA_RUN_TOOL_AUTOMATICALLY ON -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS TEST_BENCH_MODE -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH tb_place_random_move -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME connect_4_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME connect_4_tb -section_id connect_4_tb
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_place_random_move.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/connect_4_tb.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/connect4_top.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_synchronizer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_controller.sv
@@ -101,4 +109,14 @@ set_global_assignment -name SYSTEMVERILOG_FILE src/move_validator.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/win_detector.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/timer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/place_random_move.sv
+set_global_assignment -name EDA_TEST_BENCH_FILE src/connect4.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/timer.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/win_detector.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/place_random_move.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/move_validator.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_place_random_move -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_place_random_move -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_place_random_move.sv -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_FILE src/place_random_move.sv -section_id tb_place_random_move
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

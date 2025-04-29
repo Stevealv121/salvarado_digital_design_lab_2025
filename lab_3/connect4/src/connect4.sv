@@ -136,7 +136,7 @@ end
   timer_reset = 0;
   timer_enable = 0;
   next_player = current_player;
-  next_move_column = (current_player == 1) ? player1_move : player2_move;
+  next_move_column = 0; // Default a 0 si no estamos en turnos
   
   case (current_state)
     INIT: begin
@@ -150,12 +150,14 @@ end
 
     PLAYER1_TURN: begin
       timer_enable = 1;
+		next_move_column = player1_move;
       if (player1_move != 0 || timer_expired)
         next_state = PROCESS_MOVE;
     end
 
     PLAYER2_TURN: begin
       timer_enable = 1;
+		next_move_column = player2_move;
       if (player2_move != 0 || timer_expired)
         next_state = PROCESS_MOVE;
     end
