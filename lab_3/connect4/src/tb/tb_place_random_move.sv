@@ -1,12 +1,12 @@
-`timescale 1ns/1ps
+`timescale 1ns/1ps 
 
 module tb_place_random_move();
 
-  // Parámetros
+  // Señales
   logic clk;
   logic rst;
   logic start;
-  logic [5:0][6:0] board_in;
+  logic [1:0] board_in[5:0][6:0];  // Tablero modificado con 2 bits por celda
   logic [2:0] random_col;
   logic done;
 
@@ -31,15 +31,19 @@ module tb_place_random_move();
     // Inicialización
     rst = 1;
     start = 0;
-    board_in = '0;
+
+    // Limpiar tablero (todo vacío = 2'b00)
+    for (int i = 0; i < 6; i++) begin
+      for (int j = 0; j < 7; j++) begin
+        board_in[i][j] = 2'b00;
+      end
+    end
 
     // Reset inicial
     #10;
     rst = 0;
 
     // --- CASO 1: Tablero vacío ---
-    // Todas las columnas deben ser válidas
-
     #10;
     start = 1;
     #10;
@@ -49,10 +53,10 @@ module tb_place_random_move();
     wait (done == 1);
     $display("Random column selected (empty board): %0d", random_col);
 
-    // --- CASO 2: Tablero con columnas llenas parcialmente ---
-    // Llenamos parcialmente algunas columnas (por ejemplo, columna 0 y 3 llenas en la fila 0)
-    board_in[0][0] = 1; // Columna 0 llena
-    board_in[0][3] = 1; // Columna 3 llena
+    // --- CASO 2: Tablero parcialmente lleno ---
+    // Llenamos fila superior de columna 0 y 3 (ya no deberían ser válidas)
+    board_in[0][0] = 2'b01; // Jugador 1
+    board_in[0][3] = 2'b10; // Jugador 2
 
     #20;
     start = 1;
@@ -68,10 +72,11 @@ module tb_place_random_move();
     end
 
     // --- CASO 3: Tablero casi lleno ---
-    // Llenamos todas las columnas excepto la columna 6
+    // Todas las columnas llenas excepto columna 6
     for (int col = 0; col < 6; col++) begin
-      board_in[0][col] = 1; // Solo columna 6 queda libre
+      board_in[0][col] = 2'b01; // Jugador 1
     end
+    board_in[0][6] = 2'b00; // Columna 6 libre
 
     #20;
     start = 1;
@@ -86,7 +91,6 @@ module tb_place_random_move();
       $display("SUCCESS: Correctly selected column 6.");
     end
 
-    // Terminar la simulación
     #20;
     $finish;
   end
