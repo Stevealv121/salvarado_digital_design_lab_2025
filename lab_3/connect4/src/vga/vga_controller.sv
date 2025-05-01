@@ -21,26 +21,19 @@ module vga_controller(
 	 vga_synchronizer#(.HACTIVE(640), .HFP(16), .HSYN(96), .HBP(48), .VACTIVE(480), .VFP(11), .VSYN(2), .VBP(32))
         vga_synchronizer(CLK_VGA, SYNC_H, SYNC_V, SYNC_B, SYNC_BLANK, x, y);
 
-	 // Simple pattern generator
-    always_ff @(posedge CLK_VGA) begin
-        if (SYNC_BLANK) begin
-            // Active display area - draw a white diagonal line
-            if (y == x >> 1) begin  // Simple line equation (y = x/2)
-                vga_red <= 8'hFF;
-                vga_green <= 8'hFF;
-                vga_blue <= 8'hFF;
-            end else begin
-                // Black background
-                vga_red <= 8'h00;
-                vga_green <= 8'h00;
-                vga_blue <= 8'h00;
-            end
-        end else begin
-            // Blanking area - must output black
-            vga_red <= 8'h00;
-            vga_green <= 8'h00;
-            vga_blue <= 8'h00;
-        end
-    end
+	 //render the game board
+    display_board gui_board (
+        .clk_vga(CLK_VGA),
+        .x(x),
+        .y(y),
+        .game_state(game_state),
+        .board(board),
+        .turn_timer(turn_timer),
+        .current_player(current_player),
+        .sync_blank(SYNC_BLANK),
+        .vga_r(vga_red),
+        .vga_g(vga_green),
+        .vga_b(vga_blue)
+    );
 	 
 endmodule
