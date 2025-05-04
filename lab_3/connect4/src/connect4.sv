@@ -3,6 +3,8 @@ module connect4(
   input logic rst,
   input logic [2:0] player1_move,
   input logic [2:0] player2_move,
+  input logic player1_move_valid,  // Nueva entrada: señal de validación de movimiento
+  input logic player2_move_valid,  // Nueva entrada: señal de validación de movimiento
   input logic player1_start,
   input logic player2_start,
   output logic [1:0] game_state,
@@ -185,7 +187,8 @@ module connect4(
 
       PLAYER1_TURN: begin
         timer_enable = 1;
-        if (player1_move != 0) begin
+        // Cambio aquí: Ahora usamos player1_move_valid para determinar cuando el jugador ha confirmado
+        if (player1_move_valid) begin
           next_move_column = player1_move;
           next_state = PROCESS_MOVE;
         end else if (timer_expired) begin
@@ -195,7 +198,8 @@ module connect4(
 
       PLAYER2_TURN: begin
         timer_enable = 1;
-        if (player2_move != 0) begin
+        // Cambio aquí: Ahora usamos player2_move_valid para determinar cuando el jugador ha confirmado
+        if (player2_move_valid) begin
           next_move_column = player2_move;
           next_state = PROCESS_MOVE;
         end else if (timer_expired) begin

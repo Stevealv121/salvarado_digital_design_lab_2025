@@ -82,7 +82,6 @@ set_location_assignment PIN_AJ26 -to vga_red[7]
 set_global_assignment -name BOARD "Cyclone V SoC Development Kit"
 set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
 set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
-set_location_assignment PIN_AA24 -to pll_status_led
 set_location_assignment PIN_AK21 -to CLK_VGA
 set_location_assignment PIN_AK22 -to SYNC_BLANK
 set_location_assignment PIN_AK18 -to SYNC_V
@@ -117,13 +116,6 @@ set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_win_detector.sv -secti
 set_global_assignment -name EDA_TEST_BENCH_FILE src/win_detector.sv -section_id tb_win_detector
 set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_move_validator.sv -section_id tb_move_validator
 set_global_assignment -name EDA_TEST_BENCH_FILE src/move_validator.sv -section_id tb_move_validator
-set_location_assignment PIN_AA30 -to player1_buttons[0]
-set_location_assignment PIN_AC29 -to player1_buttons[1]
-set_location_assignment PIN_AD30 -to player1_buttons[2]
-set_location_assignment PIN_AC28 -to player1_buttons[3]
-set_location_assignment PIN_V25 -to player1_buttons[4]
-set_location_assignment PIN_W25 -to player1_buttons[5]
-set_location_assignment PIN_AC30 -to player1_buttons[6]
 set_location_assignment PIN_AJ4 -to rst_switch
 set_global_assignment -name SYSTEMVERILOG_FILE src/gui/display_board.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_place_random_move.sv
@@ -140,4 +132,12 @@ set_global_assignment -name SYSTEMVERILOG_FILE src/timer.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/place_random_move.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_win_detector.sv
 set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_move_validator.sv
+set_location_assignment PIN_AK4 -to player1_start_button
+set_global_assignment -name SYSTEMVERILOG_FILE src/debounce.sv
+set_location_assignment PIN_AA24 -to debug_win_signal
+set_location_assignment PIN_AB30 -to column_select_switches[0]
+set_location_assignment PIN_Y27 -to column_select_switches[1]
+set_location_assignment PIN_AB28 -to column_select_switches[2]
+set_location_assignment PIN_AA14 -to player1_move_button
+set_location_assignment PIN_AA15 -to player2_move_button
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top

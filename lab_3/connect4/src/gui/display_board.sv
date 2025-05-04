@@ -5,6 +5,7 @@ module display_board(
     input logic [1:0] board[5:0][6:0], // 6x7 Connect4 board (00: empty, 01: player1, 10: player2)
     input logic [3:0] turn_timer,
     input logic [1:0] current_player,
+    input logic [2:0] column_selected, // Nueva entrada: columna seleccionada actualmente
     input logic sync_blank,         // Active display area signal
     output logic [7:0] vga_r, vga_g, vga_b  // RGB output
 );
@@ -14,6 +15,7 @@ module display_board(
     localparam BOARD_Y_START = 50;   // Board top edge position
     localparam CELL_SIZE = 60;       // Size of one cell (square)
     localparam HOLE_RADIUS = 25;     // Radius of the token holes
+    localparam INDICATOR_HEIGHT = 15; // Height of the column indicator
     
     // Colors
     localparam [23:0] BLUE_COLOR = 24'h0000FF;  // Board background (blue)
@@ -21,6 +23,8 @@ module display_board(
     localparam [23:0] YELLOW_COLOR = 24'hFFFF00; // Player 2 tokens (yellow)
     localparam [23:0] BLACK_COLOR = 24'h000000; // Empty holes (black)
     localparam [23:0] BG_COLOR = 24'h101040;    // Screen background
+    localparam [23:0] P1_INDICATOR_COLOR = 24'hFF4040; // Light red for Player 1 indicator
+    localparam [23:0] P2_INDICATOR_COLOR = 24'hFFFF40; // Light yellow for Player 2 indicator
     
     // Current pixel's position relative to the board
     logic [9:0] rel_x, rel_y;
@@ -34,6 +38,7 @@ module display_board(
     // Determine which part of the display we're drawing
     logic is_in_board_area;
     logic is_in_hole;
+    logic is_in_column_indicator;
     logic [23:0] pixel_color;
 
     // Calculate the board cell position
@@ -47,6 +52,12 @@ module display_board(
                               (x < BOARD_X_START + 7 * CELL_SIZE) && 
                               (y >= BOARD_Y_START) && 
                               (y < BOARD_Y_START + 6 * CELL_SIZE);
+                              
+    // Check if we're in the column indicator area (above the board)
+    assign is_in_column_indicator = (x >= BOARD_X_START) && 
+                                    (x < BOARD_X_START + 7 * CELL_SIZE) && 
+                                    (y >= BOARD_Y_START - INDICATOR_HEIGHT) && 
+                                    (y < BOARD_Y_START);
                                
     // Calculate distance from center of the current cell
     always_comb begin
@@ -67,7 +78,22 @@ module display_board(
         // Default background color
         pixel_color = BG_COLOR;
         
-        if (is_in_board_area) begin
+        // Column selection indicator (above the board)
+        if (is_in_column_indicator && game_state == 2'b01) begin
+            // Only show indicator when in play mode
+            logic [2:0] indicator_col;
+            indicator_col = rel_x / CELL_SIZE;
+            
+            if (indicator_col == column_selected) begin
+                // Show highlight for selected column
+                if (current_player == 2'b01)
+                    pixel_color = P1_INDICATOR_COLOR;
+                else if (current_player == 2'b10)
+                    pixel_color = P2_INDICATOR_COLOR;
+            end
+        end
+        // Board area rendering
+        else if (is_in_board_area) begin
             if (col < 7 && row < 6) begin  // Valid board position
                 if (is_in_hole) begin
                     // Draw hole/token color based on board state
@@ -83,6 +109,10 @@ module display_board(
                 end
             end
         end
+        
+        // Game state visualization
+        // Show whose turn it is or game over status somewhere on screen
+        // This could be expanded with more visual cues
     end
     
     // Output the color to VGA signals
