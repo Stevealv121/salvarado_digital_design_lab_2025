@@ -5,14 +5,15 @@ module timer(
   output logic expired,
   output logic [3:0] count
 );
-  logic [23:0] counter; // Para contar 10 segundos a 50MHz
+  // Opción 1: Corregir el valor de comparación para 1 segundo exacto
+  logic [25:0] counter; // Ampliado para soportar valores más grandes por seguridad
   
   always_ff @(posedge clk or posedge reset) begin
     if (reset) begin
       counter <= 0;
       count <= 10;
     end else if (enable) begin
-      if (counter == 24'd50_000_000) begin // 1 segundo
+      if (counter == 26'd49_999_999) begin // Exactamente 1 segundo a 50MHz (50M-1)
         counter <= 0;
         if (count > 0)
           count <= count - 1;

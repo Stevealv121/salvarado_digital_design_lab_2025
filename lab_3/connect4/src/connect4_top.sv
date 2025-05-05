@@ -131,12 +131,11 @@ module connect4_top (
     .vga_blue(vga_blue)
   );
   
-  // Display 7 segmentos para el temporizador o la columna seleccionada
-  // Descomentado para usar el display para mostrar la columna seleccionada
-  /*
-  bin_to_bcd_decoder column_display(
-    .bin_number({1'b0, column_select_switches}),  // Extendemos a 4 bits
-    .bcd_number({display_tens, display_units})
+  // Display 7 segmentos para el temporizador
+  timer_to_display timer_display(
+    .timer_value(turn_timer),
+    .display_units(display_units),
+    .display_tens(display_tens)
   );
-  */
+  
 endmodule

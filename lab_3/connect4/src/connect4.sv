@@ -3,8 +3,8 @@ module connect4(
   input logic rst,
   input logic [2:0] player1_move,
   input logic [2:0] player2_move,
-  input logic player1_move_valid,  // Nueva entrada: señal de validación de movimiento
-  input logic player2_move_valid,  // Nueva entrada: señal de validación de movimiento
+  input logic player1_move_valid,  // Señal de validación de movimiento
+  input logic player2_move_valid,  // Señal de validación de movimiento
   input logic player1_start,
   input logic player2_start,
   output logic [1:0] game_state,
@@ -63,7 +63,7 @@ module connect4(
     .column(validated_column),
     .board(game_board),
     .valid(move_valid),
-    .empty_row(move_row)  // Directly outputs to move_row
+    .empty_row(move_row)
   );
 
   win_detector win_check(
@@ -74,9 +74,14 @@ module connect4(
     .win(player_wins)
   );
 
+  // Modificación clave: Añadir reset global al timer_reset
+  // para asegurar que el timer se reinicie también cuando se resetea el juego
+  logic effective_timer_reset;
+  assign effective_timer_reset = timer_reset || rst;
+  
   timer timer_module(
     .clk(clk),
-    .reset(timer_reset),
+    .reset(effective_timer_reset),  // Ahora usamos el reset combinado
     .enable(timer_enable),
     .expired(timer_expired),
     .count(timer_count)
@@ -114,6 +119,8 @@ module connect4(
       last_move_col <= 0;
       validated_column <= 0;
       validation_ready <= 0;
+      // No es necesario resetear timer_count aquí ya que
+      // ahora el reset se propaga directamente al módulo timer
     end else begin
       current_state <= next_state;
       current_player <= next_player;
@@ -176,9 +183,13 @@ module connect4(
     next_move_column = move_column;
 
     case (current_state)
-      INIT: next_state = START_SCREEN;
+      INIT: begin
+        timer_reset = 1;  // Aseguramos que el timer se resetee
+        next_state = START_SCREEN;
+      end
 
       START_SCREEN: begin
+        timer_reset = 1;  // Aseguramos que el timer se resetee
         if (player1_start || player2_start) begin
           next_state = player1_start ? PLAYER1_TURN : PLAYER2_TURN;
           next_player = player1_start ? 2'b01 : 2'b10;
@@ -187,7 +198,7 @@ module connect4(
 
       PLAYER1_TURN: begin
         timer_enable = 1;
-        // Cambio aquí: Ahora usamos player1_move_valid para determinar cuando el jugador ha confirmado
+        // Usamos player1_move_valid para determinar cuando el jugador ha confirmado
         if (player1_move_valid) begin
           next_move_column = player1_move;
           next_state = PROCESS_MOVE;
@@ -198,7 +209,7 @@ module connect4(
 
       PLAYER2_TURN: begin
         timer_enable = 1;
-        // Cambio aquí: Ahora usamos player2_move_valid para determinar cuando el jugador ha confirmado
+        // Usamos player2_move_valid para determinar cuando el jugador ha confirmado
         if (player2_move_valid) begin
           next_move_column = player2_move;
           next_state = PROCESS_MOVE;
