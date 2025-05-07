@@ -5,8 +5,8 @@ module timer(
   output logic expired,
   output logic [3:0] count
 );
-  // Opción 1: Corregir el valor de comparación para 1 segundo exacto
-  logic [25:0] counter; // Ampliado para soportar valores más grandes por seguridad
+
+  logic [25:0] counter;
   
   always_ff @(posedge clk or posedge reset) begin
     if (reset) begin

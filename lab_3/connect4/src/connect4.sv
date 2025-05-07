@@ -3,8 +3,8 @@ module connect4(
   input logic rst,
   input logic [2:0] player1_move,
   input logic [2:0] player2_move,
-  input logic player1_move_valid,  // Señal de validación de movimiento
-  input logic player2_move_valid,  // Señal de validación de movimiento
+  input logic player1_move_valid,
+  input logic player2_move_valid,
   input logic player1_start,
   input logic player2_start,
   output logic [1:0] game_state,
@@ -13,7 +13,10 @@ module connect4(
   output logic [1:0] current_player,
   output logic debug_win_signal,
   output logic [2:0] debug_last_row,
-  output logic [2:0] debug_last_col
+  output logic [2:0] debug_last_col,
+  output logic [2:0] win_positions_row[0:3],
+  output logic [2:0] win_positions_col[0:3],
+  output logic [1:0] win_type
 );
 
   typedef enum logic [3:0] {
@@ -22,7 +25,7 @@ module connect4(
     PLAYER1_TURN,
     PLAYER2_TURN,
     PROCESS_MOVE,
-    GENERATE_RANDOM_MOVE, // Nuevo estado para manejar movimientos aleatorios
+    GENERATE_RANDOM_MOVE,
     CHECK_WIN,
     GAME_OVER
   } state_t;
@@ -62,6 +65,11 @@ module connect4(
   // Flag para indicar si estamos usando movimiento aleatorio
   logic using_random_move;
   logic next_using_random_move;
+  
+  // Señales para la línea ganadora
+  logic [2:0] winning_positions_row[0:3];
+  logic [2:0] winning_positions_col[0:3];
+  logic [1:0] winning_type;
 
   // Module instantiations
   move_validator validator(
@@ -76,17 +84,20 @@ module connect4(
     .last_move_row(last_move_row),
     .last_move_col(last_move_col),
     .player(current_player),
-    .win(player_wins)
+    .win(player_wins),
+    .win_positions_row(winning_positions_row),
+    .win_positions_col(winning_positions_col),
+    .win_type(winning_type)
   );
 
-  // Modificación clave: Añadir reset global al timer_reset
+  // reset global al timer_reset
   // para asegurar que el timer se reinicie también cuando se resetea el juego
   logic effective_timer_reset;
   assign effective_timer_reset = timer_reset || rst;
   
   timer timer_module(
     .clk(clk),
-    .reset(effective_timer_reset),  // Ahora usamos el reset combinado
+    .reset(effective_timer_reset),
     .enable(timer_enable),
     .expired(timer_expired),
     .count(timer_count)
@@ -126,6 +137,13 @@ module connect4(
       validation_ready <= 0;
       using_random_move <= 0;
       random_start <= 0;
+      
+      // Inicializar posiciones ganadoras
+      for (int i = 0; i < 4; i++) begin
+        win_positions_row[i] <= 0;
+        win_positions_col[i] <= 0;
+      end
+      win_type <= 2'b00;
     end else begin
       current_state <= next_state;
       current_player <= next_player;
@@ -149,6 +167,14 @@ module connect4(
           game_board <= '{default:0};
           current_player <= player1_start ? 2'b01 : 2'b10;
           random_start <= 0;
+          win_detected <= 0;
+          
+          // Inicializar posiciones ganadoras
+          for (int i = 0; i < 4; i++) begin
+            win_positions_row[i] <= 0;
+            win_positions_col[i] <= 0;
+          end
+          win_type <= 2'b00;
         end
 
         GENERATE_RANDOM_MOVE: begin
@@ -177,16 +203,23 @@ module connect4(
           end
         end
 
+        CHECK_WIN: begin
+          if (player_wins) begin
+            // Si hay victoria, guardar las posiciones ganadoras
+            win_detected <= 1;
+            winner <= current_player;
+            
+            // Copiar las posiciones ganadoras
+            for (int i = 0; i < 4; i++) begin
+              win_positions_row[i] <= winning_positions_row[i];
+              win_positions_col[i] <= winning_positions_col[i];
+            end
+            win_type <= winning_type;
+          end
+        end
+
         default: begin end
       endcase
-
-      // Win detection registration
-      if (current_state == CHECK_WIN) begin
-        win_detected <= player_wins;
-        if (player_wins) begin
-          winner <= current_player;
-        end
-      end
     end
   end
 
@@ -219,7 +252,6 @@ module connect4(
       PLAYER1_TURN: begin
         timer_enable = 1;
         next_using_random_move = 0;
-        // Usamos player1_move_valid para determinar cuando el jugador ha confirmado
         if (player1_move_valid) begin
           next_move_column = player1_move;
           next_state = PROCESS_MOVE;
@@ -232,7 +264,6 @@ module connect4(
       PLAYER2_TURN: begin
         timer_enable = 1;
         next_using_random_move = 0;
-        // Usamos player2_move_valid para determinar cuando el jugador ha confirmado
         if (player2_move_valid) begin
           next_move_column = player2_move;
           next_state = PROCESS_MOVE;
@@ -281,7 +312,7 @@ module connect4(
   assign board = game_board;
   assign turn_timer = timer_count;
   assign game_state = (current_state == GAME_OVER) ? 
-                     (win_detected ? winner : 2'b00) :
+                     (win_detected ? 2'b10 : 2'b11) :
                      (current_state == START_SCREEN) ? 2'b00 : 2'b01;
   
   // Debug assignments

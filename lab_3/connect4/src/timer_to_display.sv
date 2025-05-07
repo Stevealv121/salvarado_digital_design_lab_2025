@@ -1,5 +1,3 @@
-// Primero, necesitamos un módulo para convertir el timer de 4 bits (0-10) a BCD para los displays de 7 segmentos
-
 module timer_to_display (
   input logic [3:0] timer_value,
   output logic [6:0] display_units,  // 7 segmentos para las unidades

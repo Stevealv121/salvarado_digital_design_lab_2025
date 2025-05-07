@@ -138,8 +138,6 @@ set_location_assignment PIN_AA24 -to debug_win_signal
 set_location_assignment PIN_AB30 -to column_select_switches[0]
 set_location_assignment PIN_Y27 -to column_select_switches[1]
 set_location_assignment PIN_AB28 -to column_select_switches[2]
-set_location_assignment PIN_AA14 -to player1_move_button
-set_location_assignment PIN_AA15 -to player2_move_button
 set_global_assignment -name SYSTEMVERILOG_FILE src/timer_to_display.sv
 set_location_assignment PIN_AB21 -to display_tens[6]
 set_location_assignment PIN_AF19 -to display_tens[5]
@@ -155,4 +153,6 @@ set_location_assignment PIN_AE23 -to display_units[3]
 set_location_assignment PIN_AE22 -to display_units[2]
 set_location_assignment PIN_AG22 -to display_units[1]
 set_location_assignment PIN_AD21 -to display_units[0]
+set_location_assignment PIN_AA14 -to player2_start_button
+set_location_assignment PIN_AA15 -to move_confirm_button
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
