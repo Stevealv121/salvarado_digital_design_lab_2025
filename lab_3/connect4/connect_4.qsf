@@ -1,0 +1,158 @@
+# -------------------------------------------------------------------------- #
+#
+# Copyright (C) 2025  Altera Corporation. All rights reserved.
+# Your use of Altera Corporation's design tools, logic functions 
+# and other software and tools, and any partner logic 
+# functions, and any output files from any of the foregoing 
+# (including device programming or simulation files), and any 
+# associated documentation or information are expressly subject 
+# to the terms and conditions of the Altera Program License 
+# Subscription Agreement, the Altera Quartus Prime License Agreement,
+# the Altera IP License Agreement, or other applicable license
+# agreement, including, without limitation, that your use is for
+# the sole purpose of programming logic devices manufactured by
+# Altera and sold by Altera or its authorized distributors.  Please
+# refer to the Altera Software License Subscription Agreements 
+# on the Quartus Prime software download page.
+#
+# -------------------------------------------------------------------------- #
+#
+# Quartus Prime
+# Version 24.1std.0 Build 1077 03/04/2025 SC Lite Edition
+# Date created = 16:18:52  April 09, 2025
+#
+# -------------------------------------------------------------------------- #
+#
+# Notes:
+#
+# 1) The default values for assignments are stored in the file:
+#		connect_4_assignment_defaults.qdf
+#    If this file doesn't exist, see file:
+#		assignment_defaults.qdf
+#
+# 2) Intel recommends that you do not modify this file. This
+#    file is updated automatically by the Quartus Prime software
+#    and any changes you make may be lost or overwritten.
+#
+# -------------------------------------------------------------------------- #
+
+
+set_global_assignment -name FAMILY "Cyclone V"
+set_global_assignment -name DEVICE 5CSXFC6D6F31C6
+set_global_assignment -name TOP_LEVEL_ENTITY connect4_top
+set_global_assignment -name ORIGINAL_QUARTUS_VERSION 24.1STD.0
+set_global_assignment -name PROJECT_CREATION_TIME_DATE "16:18:52  APRIL 09, 2025"
+set_global_assignment -name LAST_QUARTUS_VERSION "24.1std.0 Lite Edition"
+set_global_assignment -name PROJECT_OUTPUT_DIRECTORY output_files
+set_global_assignment -name MIN_CORE_JUNCTION_TEMP 0
+set_global_assignment -name MAX_CORE_JUNCTION_TEMP 85
+set_global_assignment -name ERROR_CHECK_FREQUENCY_DIVISOR 256
+set_global_assignment -name EDA_SIMULATION_TOOL "Questa Intel FPGA (Verilog)"
+set_global_assignment -name EDA_TIME_SCALE "1 ps" -section_id eda_simulation
+set_global_assignment -name EDA_OUTPUT_DATA_FORMAT "VERILOG HDL" -section_id eda_simulation
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_timing
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_symbol
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_signal_integrity
+set_global_assignment -name EDA_GENERATE_FUNCTIONAL_NETLIST OFF -section_id eda_board_design_boundary_scan
+set_location_assignment PIN_AF14 -to clk
+set_location_assignment PIN_AJ21 -to vga_blue[0]
+set_location_assignment PIN_AJ20 -to vga_blue[1]
+set_location_assignment PIN_AH20 -to vga_blue[2]
+set_location_assignment PIN_AJ19 -to vga_blue[3]
+set_location_assignment PIN_AH19 -to vga_blue[4]
+set_location_assignment PIN_AJ17 -to vga_blue[5]
+set_location_assignment PIN_AJ16 -to vga_blue[6]
+set_location_assignment PIN_AK16 -to vga_blue[7]
+set_location_assignment PIN_AK26 -to vga_green[0]
+set_location_assignment PIN_AJ25 -to vga_green[1]
+set_location_assignment PIN_AH25 -to vga_green[2]
+set_location_assignment PIN_AK24 -to vga_green[3]
+set_location_assignment PIN_AJ24 -to vga_green[4]
+set_location_assignment PIN_AH24 -to vga_green[5]
+set_location_assignment PIN_AK23 -to vga_green[6]
+set_location_assignment PIN_AH23 -to vga_green[7]
+set_location_assignment PIN_AK29 -to vga_red[0]
+set_location_assignment PIN_AK28 -to vga_red[1]
+set_location_assignment PIN_AK27 -to vga_red[2]
+set_location_assignment PIN_AJ27 -to vga_red[3]
+set_location_assignment PIN_AH27 -to vga_red[4]
+set_location_assignment PIN_AF26 -to vga_red[5]
+set_location_assignment PIN_AG26 -to vga_red[6]
+set_location_assignment PIN_AJ26 -to vga_red[7]
+set_global_assignment -name BOARD "Cyclone V SoC Development Kit"
+set_global_assignment -name POWER_PRESET_COOLING_SOLUTION "23 MM HEAT SINK WITH 200 LFPM AIRFLOW"
+set_global_assignment -name POWER_BOARD_THERMAL_MODEL "NONE (CONSERVATIVE)"
+set_location_assignment PIN_AK21 -to CLK_VGA
+set_location_assignment PIN_AK22 -to SYNC_BLANK
+set_location_assignment PIN_AK18 -to SYNC_V
+set_location_assignment PIN_AK19 -to SYNC_H
+set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
+set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
+set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+set_global_assignment -name EDA_RUN_TOOL_AUTOMATICALLY OFF -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_ENABLE_STATUS NOT_USED -section_id eda_simulation
+set_global_assignment -name EDA_NATIVELINK_SIMULATION_TEST_BENCH connect_4_tb -section_id eda_simulation
+set_global_assignment -name EDA_TEST_BENCH_NAME connect_4_tb -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME connect_4_tb -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_place_random_move -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_place_random_move -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_win_detector -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_win_detector
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_win_detector -section_id tb_win_detector
+set_global_assignment -name EDA_TEST_BENCH_NAME tb_move_validator -section_id eda_simulation
+set_global_assignment -name EDA_DESIGN_INSTANCE_NAME NA -section_id tb_move_validator
+set_global_assignment -name EDA_TEST_BENCH_MODULE_NAME tb_move_validator -section_id tb_move_validator
+set_global_assignment -name EDA_TEST_BENCH_FILE src/connect4.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/timer.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/win_detector.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/place_random_move.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/move_validator.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/connect_4_tb.sv -section_id connect_4_tb
+set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_place_random_move.sv -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_FILE src/place_random_move.sv -section_id tb_place_random_move
+set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_win_detector.sv -section_id tb_win_detector
+set_global_assignment -name EDA_TEST_BENCH_FILE src/win_detector.sv -section_id tb_win_detector
+set_global_assignment -name EDA_TEST_BENCH_FILE src/tb/tb_move_validator.sv -section_id tb_move_validator
+set_global_assignment -name EDA_TEST_BENCH_FILE src/move_validator.sv -section_id tb_move_validator
+set_location_assignment PIN_AJ4 -to rst_switch
+set_global_assignment -name SYSTEMVERILOG_FILE src/gui/display_board.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_place_random_move.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/connect_4_tb.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/connect4_top.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_synchronizer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/vga/vga_controller.sv
+set_global_assignment -name QIP_FILE src/vga/pll.qip
+set_global_assignment -name SIP_FILE src/vga/pll.sip
+set_global_assignment -name SYSTEMVERILOG_FILE src/connect4.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/move_validator.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/win_detector.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/timer.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/place_random_move.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_win_detector.sv
+set_global_assignment -name SYSTEMVERILOG_FILE src/tb/tb_move_validator.sv
+set_location_assignment PIN_AK4 -to player1_start_button
+set_global_assignment -name SYSTEMVERILOG_FILE src/debounce.sv
+set_location_assignment PIN_AA24 -to debug_win_signal
+set_location_assignment PIN_AB30 -to column_select_switches[0]
+set_location_assignment PIN_Y27 -to column_select_switches[1]
+set_location_assignment PIN_AB28 -to column_select_switches[2]
+set_global_assignment -name SYSTEMVERILOG_FILE src/timer_to_display.sv
+set_location_assignment PIN_AB21 -to display_tens[6]
+set_location_assignment PIN_AF19 -to display_tens[5]
+set_location_assignment PIN_AE19 -to display_tens[4]
+set_location_assignment PIN_AG20 -to display_tens[3]
+set_location_assignment PIN_AF20 -to display_tens[2]
+set_location_assignment PIN_AG21 -to display_tens[1]
+set_location_assignment PIN_AF21 -to display_tens[0]
+set_location_assignment PIN_AH22 -to display_units[6]
+set_location_assignment PIN_AF23 -to display_units[5]
+set_location_assignment PIN_AG23 -to display_units[4]
+set_location_assignment PIN_AE23 -to display_units[3]
+set_location_assignment PIN_AE22 -to display_units[2]
+set_location_assignment PIN_AG22 -to display_units[1]
+set_location_assignment PIN_AD21 -to display_units[0]
+set_location_assignment PIN_AA14 -to player2_start_button
+set_location_assignment PIN_AA15 -to move_confirm_button
+set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
